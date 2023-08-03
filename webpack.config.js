@@ -85,13 +85,16 @@ module.exports = {
       {
         test: /\.s?css$/i,
         use: [
+          'style-loader',
+          'css-loader',
           {
-            loader: MiniCssExtractPlugin.loader,
+            loader: 'postcss-loader',
             options: {
-              publicPath: '',
+              postcssOptions: {
+                plugins: () => [require('autoprefixer')],
+              },
             },
           },
-          'css-loader',
           'sass-loader',
         ],
       },

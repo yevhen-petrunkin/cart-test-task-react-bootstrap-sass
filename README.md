@@ -1,1 +1,1 @@
-# webpack-react-stater
+# webpack-react-stater-sass
