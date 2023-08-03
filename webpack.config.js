@@ -32,7 +32,7 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(),
     new HTMLWebpackPlugin({
-      title: 'React-App',
+      title: 'Online Shop Cart Model',
       template: path.resolve(__dirname, './index.html'),
       filename: 'index.html',
     }),
