@@ -1,8 +1,10 @@
+const webpack = require('webpack');
 const path = require('path');
 
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -39,6 +41,13 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: '[name].[contenthash].css',
     }),
+    new webpack.DefinePlugin({
+      'process.env.REACT_APP_SANITY_PROJECT_ID': JSON.stringify('80qddw81'),
+      'process.env.REACT_APP_SANITY_TOKEN': JSON.stringify(
+        'skiSfvmqTKq4Na1Kd8zsoXCuOMFDYQHSVgE3g0fsVhG7NFVjfE0JVU3KpPvn97VURiFYQgc247CDGcZ249hR3rSsvIStz0kVe6nK09O2lVhVQ7AFHn5qSBxRrfH3364S1szpMQFSKxE7L9SkOu4K3z2LZyPKehzPOw3JOTR3e45wstFiBhK6'
+      ),
+    }),
+    new FaviconsWebpackPlugin('./public/favicon/logo.png'),
   ],
 
   module: {
