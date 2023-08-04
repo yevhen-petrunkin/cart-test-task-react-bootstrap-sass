@@ -47,7 +47,7 @@ const CartComponent = ({
 
   return (
     <section className="position-absolute bg-light p-3 rounded shadow cart">
-      <h2 className="h3 ">Personal Cart</h2>
+      <h2 className="h3 ">Ваш продуктовий кошик:</h2>
       <ul className="list-group mt-3">
         {orders.map(order => (
           <li
@@ -71,14 +71,14 @@ const CartComponent = ({
       </ul>
       <div className="d-flex flex-column gap-3 mt-3 fs-6 fw-bold">
         <p className="d-flex gap-3">
-          Total Games:
+          Всього товарів:
           <span className="text-primary">
             {cart.getTotalProductNumber()}
           </span>{' '}
           шт.
         </p>
         <p className="d-flex gap-3">
-          Total Price:
+          Загальна сума:
           <span className="text-primary">{cart.getTotalPrice()}</span> UAH
         </p>
         <button
@@ -87,7 +87,7 @@ const CartComponent = ({
           onClick={onReset}
           disabled={orders.length === 0}
         >
-          Reset Cart
+          Очистити кошик
         </button>
       </div>
     </section>
