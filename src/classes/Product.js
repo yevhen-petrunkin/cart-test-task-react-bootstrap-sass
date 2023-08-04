@@ -53,7 +53,7 @@ class Product {
   }
 
   decreaseProductNumber() {
-    if ((this._number = 0)) {
+    if (this._number <= 0) {
       return;
     }
     this._number -= 1;
