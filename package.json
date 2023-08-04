@@ -7,7 +7,7 @@
   "scripts": {
     "start": "webpack serve",
     "watch": "webpack --watch",
-    "build": "webpack --config webpack.config.js",
+    "build": "webpack --mode production",
     "build-dev": "webpack",
     "clean": "rm -rf build",
     "deploy": "gh-pages -d build",
