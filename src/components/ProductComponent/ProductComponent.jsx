@@ -1,26 +1,28 @@
 import { urlFor } from '../../client';
-import { useState, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 const placeholder = './assets/images/placeholder.jpg';
 
-const ProductComponent = ({ product, handleOrder }) => {
-  const [productNumber, setProductNumber] = useState(
-    product.getProductNumber()
-  );
-
+const ProductComponent = ({ product, handleOrder, delOrder, handleDelete }) => {
   const handleIncrease = useCallback(() => {
     product.increaseProductNumber();
-    setProductNumber(product.getProductNumber());
-
     handleOrder(product.getProductOrder());
-  }, [product, setProductNumber, handleOrder]);
+  }, [product, handleOrder]);
 
   const handleDecrease = useCallback(() => {
     product.decreaseProductNumber();
-    setProductNumber(product.getProductNumber());
-
     handleOrder(product.getProductOrder());
-  }, [product, setProductNumber, handleOrder]);
+  }, [product, handleOrder]);
+
+  useEffect(() => {
+    if (!delOrder) {
+      return;
+    }
+
+    if (delOrder.toLowerCase() === product.getProductName().toLowerCase()) {
+      product.resetProductNumber();
+    }
+  }, [delOrder, product]);
 
   return (
     <li>
@@ -38,7 +40,7 @@ const ProductComponent = ({ product, handleOrder }) => {
       </p>
       <p>
         <span>Quantity: </span>
-        {productNumber}
+        {product.getProductNumber()}
       </p>
       <p>
         <span>Price: </span>
@@ -51,8 +53,12 @@ const ProductComponent = ({ product, handleOrder }) => {
         </button>
         <button
           type="button"
-          onClick={handleDecrease}
-          disabled={productNumber <= 0}
+          onClick={() => {
+            product.getProductNumber() <= 1
+              ? handleDelete(product.getProductName())
+              : handleDecrease();
+          }}
+          disabled={product.getProductNumber() <= 0}
         >
           -
         </button>

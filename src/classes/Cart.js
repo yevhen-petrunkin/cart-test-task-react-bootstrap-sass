@@ -12,8 +12,7 @@ class Cart {
     }
 
     this._totalNum = this._orders.reduce(
-      aggr,
-      order => (aggr += order.number),
+      (aggr, order) => (aggr += order.number),
       0
     );
   }
@@ -25,8 +24,7 @@ class Cart {
     }
 
     this._totalPrice = this._orders.reduce(
-      aggr,
-      order => (aggr += order.aggrPrice),
+      (aggr, order) => (aggr += order.aggrPrice),
       0
     );
   }
@@ -36,10 +34,12 @@ class Cart {
   }
 
   getTotalProductNumber() {
+    this.calcTotalProductNumber();
     return this._totalNum;
   }
 
   getTotalPrice() {
+    this.calcTotalPrice();
     return this._totalPrice;
   }
 
@@ -113,30 +113,6 @@ class Cart {
     );
     this._orders = [...filteredOrders];
     this.saveCartInLocalStorage();
-  }
-
-  calcTotalProductNumber() {
-    if (!this._orders.length) {
-      this._totalNum = 0;
-      return;
-    }
-
-    this._totalNum = this._orders.reduce(
-      (aggr, order) => (aggr += order.number),
-      0
-    );
-  }
-
-  calcTotalPrice() {
-    if (!this._orders.length) {
-      this._totalPrice = 0;
-      return;
-    }
-
-    this._totalPrice = this._orders.reduce(
-      (aggr, order) => (aggr += order.aggrPrice),
-      0
-    );
   }
 
   resetCart() {

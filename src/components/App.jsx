@@ -11,32 +11,42 @@ const App = () => {
   const [products, setProducts] = useState(null);
   const [cart, setCart] = useState(null);
   const [order, setOrder] = useState(null);
-
-  console.log('New Order: ', order);
+  const [delOrderName, setDelOrderName] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      const cardData = new Cart();
-      cardData.checkCartInLocalStorage();
-      setCart(cardData);
+      const cartData = new Cart();
+      cartData.checkCartInLocalStorage();
+      setCart(cartData);
 
       const productList = new ProductList();
 
-      console.log(productList);
       await productList.fetchProducts();
-      productList.alignProductNumbersWithCart(cardData.getOrdersFromCart());
-      setProducts(productList);
+      productList.alignProductNumbersWithCart(cartData.getOrdersFromCart());
+      setTimeout(() => setProducts(productList), 200);
     };
 
     fetchData();
   }, []);
 
-  const handleNumberChange = useCallback(
+  const handleOrder = useCallback(
     order => {
       setOrder(order);
     },
     [setOrder]
   );
+
+  const handleDeleteOrder = useCallback(
+    name => {
+      setDelOrderName(name);
+      setTimeout(() => setDelOrderName(null), 200);
+    },
+    [setDelOrderName]
+  );
+
+  const handleReset = useCallback(() => {
+    products.resetProductNumbers();
+  }, [products]);
 
   return (
     <>
@@ -44,7 +54,13 @@ const App = () => {
         <nav>
           <CartBtn />
 
-          <CartComponent cart={cart} order={order} />
+          <CartComponent
+            cart={cart}
+            order={order}
+            delOrder={delOrderName}
+            handleDelete={handleDeleteOrder}
+            handleReset={handleReset}
+          />
         </nav>
       </header>
 
@@ -53,7 +69,9 @@ const App = () => {
           <h1>Осінній розпродаж ігор!</h1>
           <ProductGallery
             productListData={products}
-            handleOrder={handleNumberChange}
+            handleOrder={handleOrder}
+            delOrder={delOrderName}
+            handleDelete={handleDeleteOrder}
           />
         </section>
       </main>

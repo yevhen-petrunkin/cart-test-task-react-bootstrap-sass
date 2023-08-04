@@ -58,6 +58,10 @@ class Product {
     }
     this._number -= 1;
   }
+
+  resetProductNumber() {
+    this._number = 0;
+  }
 }
 
 export default Product;

@@ -1,18 +1,26 @@
 import ProductComponent from '../ProductComponent/ProductComponent';
 
-const ProductGallery = ({ productListData, handleOrder }) => {
+const ProductGallery = ({
+  productListData,
+  handleOrder,
+  delOrder,
+  handleDelete,
+}) => {
+  if (!productListData) {
+    return;
+  }
+
   return (
     <ul>
-      {productListData &&
-        productListData
-          .getProducts()
-          .map(product => (
-            <ProductComponent
-              key={product.getProductName()}
-              product={product}
-              handleOrder={handleOrder}
-            />
-          ))}
+      {productListData.getProducts().map(product => (
+        <ProductComponent
+          key={product.getProductName()}
+          product={product}
+          handleOrder={handleOrder}
+          delOrder={delOrder}
+          handleDelete={handleDelete}
+        />
+      ))}
     </ul>
   );
 };
