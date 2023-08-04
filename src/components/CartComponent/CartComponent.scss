@@ -1,0 +1,17 @@
+.cart {
+  top: 65px;
+  right: 0;
+
+  min-width: 400px;
+  min-height: 200px;
+}
+
+.cart__item {
+  p {
+    margin: 0;
+  }
+}
+
+.cart__result-line {
+  gap: 1rem;
+}

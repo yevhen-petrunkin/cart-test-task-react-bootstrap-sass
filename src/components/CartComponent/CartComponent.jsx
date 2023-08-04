@@ -1,3 +1,4 @@
+import './CartComponent.scss';
 import { useState, useEffect } from 'react';
 
 const CartComponent = ({
@@ -6,6 +7,7 @@ const CartComponent = ({
   handleDelete,
   delOrder,
   handleReset,
+  toggle,
 }) => {
   if (!cart) {
     return;
@@ -13,50 +15,50 @@ const CartComponent = ({
 
   const [orders, setOrders] = useState(cart.getOrdersFromCart());
 
-  const onReset = () => {
-    cart.resetCart();
-    handleReset(cart);
-    setTimeout(() => {
-      setOrders(cart.getOrdersFromCart());
-    }, 200);
+  const onReset = async () => {
+    await cart.resetCart();
+    await handleReset();
+    setOrders(cart.getOrdersFromCart());
   };
 
   useEffect(() => {
-    cart.addOrderToCart(order);
-    setTimeout(() => {
+    const addOrderToCartAsync = async () => {
+      await cart.addOrderToCart(order);
       setOrders(cart.getOrdersFromCart());
-    }, 200);
+    };
+
+    addOrderToCartAsync();
   }, [order, cart, setOrders]);
 
   useEffect(() => {
-    if (!delOrder) {
-      return;
+    if (delOrder) {
+      const deleteOrderFromCartAsync = async () => {
+        await cart.deleteOrderFromCart(delOrder);
+        setOrders(cart.getOrdersFromCart());
+      };
+
+      deleteOrderFromCartAsync();
     }
-    cart.deleteOrderFromCart(delOrder);
-    setTimeout(() => {
-      setOrders(cart.getOrdersFromCart());
-    }, 200);
   }, [delOrder, cart, setOrders]);
 
+  if (!toggle) {
+    return;
+  }
+
   return (
-    <section>
-      <h2>Personal Cart</h2>
-      <ul>
+    <section className="position-absolute bg-light p-3 rounded shadow cart">
+      <h2 className="h3 ">Personal Cart</h2>
+      <ul className="list-group mt-3">
         {orders.map(order => (
-          <li key={order.name}>
-            <p>
-              <span>Game: </span>
-              {order.name}
-            </p>
-            <p>
-              <span>Quantity: </span>
-              {order.number}
-            </p>
-            <p>
-              <span>Cost: </span>
-              {order.aggrPrice}
-            </p>
+          <li
+            key={order.name}
+            className="list-group-item d-flex align-items-center px-3 gap-3 fs-6 cart__item"
+          >
+            <p>{order.name}</p>
+            <p>{order.number} шт.</p>
+            <p>{order.aggrPrice} UAH</p>
             <button
+              className="btn text-danger text-decoration-underline"
               type="button"
               onClick={() => {
                 handleDelete(order.name);
@@ -67,17 +69,27 @@ const CartComponent = ({
           </li>
         ))}
       </ul>
-      <p>
-        <span>Total Games: </span>
-        {cart.getTotalProductNumber()}
-      </p>
-      <p>
-        <span>Total Price: </span>
-        {cart.getTotalPrice()}
-      </p>
-      <button type="button" onClick={onReset}>
-        Reset Cart
-      </button>
+      <div className="d-flex flex-column gap-3 mt-3 fs-6 fw-bold">
+        <p className="d-flex gap-3">
+          Total Games:
+          <span className="text-primary">
+            {cart.getTotalProductNumber()}
+          </span>{' '}
+          шт.
+        </p>
+        <p className="d-flex gap-3">
+          Total Price:
+          <span className="text-primary">{cart.getTotalPrice()}</span> UAH
+        </p>
+        <button
+          className="btn btn-danger"
+          type="button"
+          onClick={onReset}
+          disabled={orders.length === 0}
+        >
+          Reset Cart
+        </button>
+      </div>
     </section>
   );
 };

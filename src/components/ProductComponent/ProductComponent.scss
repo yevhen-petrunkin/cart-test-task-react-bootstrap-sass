@@ -1,0 +1,31 @@
+.gallery__card {
+  flex-basis: calc((100% - 6rem) / 4);
+
+  @media screen and (max-width: 1024px) {
+    flex-basis: calc((100% - 3rem) / 3);
+  }
+
+  @media screen and (max-width: 768px) {
+    flex-basis: calc((100% - 2rem) / 2);
+  }
+
+  @media screen and (max-width: 460px) {
+    flex-basis: calc((100% - 1rem) / 1);
+  }
+}
+
+.gallery__btn-set {
+  height: 3rem;
+}
+
+.gallery__card-name {
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.gallery__card-price {
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}

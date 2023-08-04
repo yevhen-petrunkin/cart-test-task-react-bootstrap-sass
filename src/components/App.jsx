@@ -1,14 +1,16 @@
+import './App.scss';
+
 import Cart from '../classes/Cart';
 import ProductList from '../classes/ProductList';
 
 import { useEffect, useState, useCallback } from 'react';
 
 import ProductGallery from './ProductGallery/ProductGallery';
-import CartComponent from './CartComponent/CartComponent';
-import CartBtn from './CartBtn/CartBtn';
+import Navbar from './Navbar/Navbar';
 
 const App = () => {
-  const [products, setProducts] = useState(null);
+  const [productsData, setProductsData] = useState(null);
+  const [products, setProducts] = useState([]);
   const [cart, setCart] = useState(null);
   const [order, setOrder] = useState(null);
   const [delOrderName, setDelOrderName] = useState(null);
@@ -23,7 +25,9 @@ const App = () => {
 
       await productList.fetchProducts();
       productList.alignProductNumbersWithCart(cartData.getOrdersFromCart());
-      setTimeout(() => setProducts(productList), 200);
+
+      setProductsData(productList);
+      setProducts(productList.getProducts());
     };
 
     fetchData();
@@ -37,38 +41,41 @@ const App = () => {
   );
 
   const handleDeleteOrder = useCallback(
-    name => {
+    async name => {
       setDelOrderName(name);
-      setTimeout(() => setDelOrderName(null), 200);
+
+      await new Promise(resolve => setTimeout(resolve, 200));
+
+      setDelOrderName(null);
     },
     [setDelOrderName]
   );
 
   const handleReset = useCallback(() => {
-    products.resetProductNumbers();
-  }, [products]);
+    productsData.resetProductNumbers();
+    const updatedProducts = [...productsData.getProducts()];
+    setProducts(updatedProducts);
+  }, [products, setProducts, productsData]);
 
   return (
     <>
-      <header>
-        <nav>
-          <CartBtn />
-
-          <CartComponent
-            cart={cart}
-            order={order}
-            delOrder={delOrderName}
-            handleDelete={handleDeleteOrder}
-            handleReset={handleReset}
-          />
-        </nav>
+      <header className="fixed-top p-3 bg-primary">
+        <Navbar
+          cart={cart}
+          order={order}
+          delOrder={delOrderName}
+          handleDelete={handleDeleteOrder}
+          handleReset={handleReset}
+        />
       </header>
 
-      <main>
-        <section>
-          <h1>Осінній розпродаж ігор!</h1>
+      <main className="bg-warning">
+        <section className="container showcase">
+          <h1 className="h1 text-center text-uppercase">
+            Осінній розпродаж ігор!
+          </h1>
           <ProductGallery
-            productListData={products}
+            products={products}
             handleOrder={handleOrder}
             delOrder={delOrderName}
             handleDelete={handleDeleteOrder}
