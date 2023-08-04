@@ -64,7 +64,7 @@ const CartComponent = ({
                 handleDelete(order.name);
               }}
             >
-              Delete
+              Видалити
             </button>
           </li>
         ))}
